@@ -28,3 +28,4 @@
 /Users/ali/RiderProjects/Aspnet20251109/ClinicApp/obj/Debug/net8.0/ClinicApp.pdb
 /Users/ali/RiderProjects/Aspnet20251109/ClinicApp/obj/Debug/net8.0/ClinicApp.genruntimeconfig.cache
 /Users/ali/RiderProjects/Aspnet20251109/ClinicApp/obj/Debug/net8.0/ref/ClinicApp.dll
+/Users/ali/RiderProjects/Aspnet20251109/ClinicApp/obj/Debug/net8.0/ClinicApp.sourcelink.json

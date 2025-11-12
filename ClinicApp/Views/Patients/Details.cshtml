@@ -1,0 +1,13 @@
+@model Patient
+
+
+<div>
+    <h1>Details: </h1>
+    <div>
+        <h2>@Model.FullName</h2>
+        <p><strong>National ID:</strong> @Model.NationalId</p>
+        <p><strong>Email:</strong> @Model.Email</p>
+        <p><strong>Phone:</strong> @Model.PhoneNumber</p>
+        <p><strong>Date of Birth:</strong> @Model.DateOfBirth.ToString("yyyy-MM-dd")</p>
+    </div>
+</div>

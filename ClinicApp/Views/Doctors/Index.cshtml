@@ -1,0 +1,16 @@
+@model List<Doctor>
+
+<h1>Doctors</h1>
+<div>
+    <ol>
+    @foreach (var d in Model)
+    {
+        <li>
+            <a asp-controller="Doctors" asp-action="Details" asp-route-id="@d.Id">
+                @d.FirstName @d.LastName
+            </a>
+        </li>
+    }
+    </ol>
+
+</div>
