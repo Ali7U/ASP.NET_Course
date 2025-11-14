@@ -1,16 +1,43 @@
-@model List<Doctor>
+@model List<DoctorVM>
 
 <h1>Doctors</h1>
 <div>
+    <a asp-controller="Doctors" asp-action="Register">Register</a>
+
     <ol>
-    @foreach (var d in Model)
-    {
-        <li>
-            <a asp-controller="Doctors" asp-action="Details" asp-route-id="@d.Id">
-                @d.FirstName @d.LastName
-            </a>
-        </li>
-    }
+        @foreach (var d in Model)
+        {
+            <li>
+                <a asp-controller="Doctors" asp-action="Details" asp-route-id="@d.Id">
+                    @d.FirstName @d.LastName
+                </a>
+                <a class="btn btn-danger js-btn-delete" data-id="@d.Id" >
+                    <i class="bi bi-person-x"></i>
+                </a>
+            </li>
+         
+            
+        }
     </ol>
 
 </div>
+
+@section Scripts{
+    <script>
+        $(".js-btn-delete").on("click", function () {
+            const btn = $(this);
+            const id = $(this).data("id");
+            const isConfirmed = confirm("Are you sure you want to delete this doctor?");
+            if(isConfirmed){
+                $.ajax({
+                    url: `/Doctors/Delete/${id}`,
+                    success: function () {
+                        btn.parents("li").remove();                    },
+                    error: function (error) {
+                        alert("An error occurred while trying to delete the patient: " + error);
+                    }
+                })
+            }
+        })
+    </script>    
+}

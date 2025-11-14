@@ -1,0 +1,35 @@
+@model DoctorCreateVM
+
+<h1>Register new Doctor</h1>
+<form method="post">
+    <div class="form-floating mb-3">
+        <input class="form-control" asp-for="FirstName"/>
+        <label asp-for="FirstName"></label>
+        <span class="text-danger" asp-validation-for="FirstName"></span>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input class="form-control" asp-for="LastName"/>
+        <label asp-for="LastName"></label>
+        <span class="text-danger" asp-validation-for="LastName"></span>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input class="form-control" asp-for="Email"/>
+        <label asp-for="Email"></label>
+        <span class="text-danger" asp-validation-for="Email"></span>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input class="form-control" asp-for="HireDate"/>
+        <label asp-for="HireDate"></label>
+        <span class="text-danger" asp-validation-for="HireDate"></span>
+    </div>
+    
+    <div class="form-floating mb-3">
+        <input class="form-control" asp-for="PhoneNumber"/>
+        <label asp-for="PhoneNumber"></label>
+        <span class="text-danger" asp-validation-for="PhoneNumber"></span>
+    </div>
+    <button class="btn btn-primary" type="submit">Register</button>
+</form>

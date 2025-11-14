@@ -33,4 +33,12 @@ public class PatientsController : Controller
         Constants.Patients.Add(patient);
         return RedirectToAction("Details", new {id = patient.Id});
     }
+    
+    public IActionResult Delete(int id)
+    {
+        var patient = Constants.Patients.Single(d => d.Id == id);
+        Constants.Patients.Remove(patient);
+        
+        return Ok();    
+    }
 }
