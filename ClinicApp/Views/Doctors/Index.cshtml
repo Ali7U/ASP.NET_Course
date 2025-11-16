@@ -2,7 +2,7 @@
 
 <h1>Doctors</h1>
 <div>
-    <a asp-controller="Doctors" asp-action="Register">Register</a>
+    <a asp-controller="Doctors" asp-action="Update">Register</a>
 
     <ol>
         @foreach (var d in Model)
@@ -11,6 +11,9 @@
                 <a asp-controller="Doctors" asp-action="Details" asp-route-id="@d.Id">
                     @d.FirstName @d.LastName
                 </a>
+                <a class="btn btn-primary js-btn-delete" asp-controller="Doctors" asp-action="Update" asp-route-id="@d.Id">
+                    <i class="bi bi-pencil-square"></i>
+                    </a>
                 <a class="btn btn-danger js-btn-delete" data-id="@d.Id" >
                     <i class="bi bi-person-x"></i>
                 </a>

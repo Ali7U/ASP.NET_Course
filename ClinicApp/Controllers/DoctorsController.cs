@@ -24,6 +24,7 @@ public class DoctorsController : Controller
     }
     
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public IActionResult Register(DoctorCreateVM doctorVm)
     {
         if (!ModelState.IsValid)
@@ -43,5 +44,31 @@ public class DoctorsController : Controller
         Constants.Doctors.Remove(doctor);
         
         return Ok();    
+    }
+    
+    public IActionResult Update(int id)
+    {
+        var doctor = Constants.Doctors.Single(d => d.Id == id).ToUpdateDoctorVM();
+        return View(doctor);
+    }
+    
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Update(int id, DoctorUpdateVM doctorVm)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(doctorVm);
+        }
+
+        var doctor = Constants.Doctors.Single(d => d.Id == id);
+        
+        doctor.FirstName = doctorVm.FirstName;
+        doctor.LastName = doctorVm.LastName;
+        doctor.Email = doctorVm.Email;
+        doctor.HireDate = doctorVm.HireDate;
+        doctor.PhoneNumber = doctorVm.PhoneNumber;
+        
+        return RedirectToAction("Details", new { id });
     }
 }

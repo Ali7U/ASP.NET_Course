@@ -12,7 +12,7 @@ public class Doctor
     public string FirstName { get; set; }
     
     [MaxLength(50), Required]
-    public string? LastName { get; set; }
+    public string LastName { get; set; }
     [Required]
     public string PhoneNumber { get; set; } = null!;
     [MaxLength(150), Required]
@@ -33,6 +33,18 @@ public class Doctor
             PhoneNumber = PhoneNumber,
             Email = Email,
             HireDate = HireDate
+        };
+    }
+
+    public DoctorUpdateVM ToUpdateDoctorVM()
+    {
+        return new DoctorUpdateVM()
+        {
+            FirstName = FirstName,
+            LastName = LastName,
+            Email = Email,
+            HireDate = HireDate,
+            PhoneNumber = PhoneNumber
         };
     }
 }
