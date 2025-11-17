@@ -6,16 +6,30 @@ namespace ClinicApp.Controllers;
 
 public class DoctorsController : Controller
 {
-    // GET
-    public IActionResult Index()
+    private readonly ClinicContext _context;
+    
+    public DoctorsController(ClinicContext context)
     {
-        var doctors = Constants.Doctors.Select(d => d.ToDoctorVM()).ToList();
-        return View(doctors);
+        _context = context;
+    }
+    [HttpGet]
+    // GET
+    public IActionResult Index(DoctorFilterVM  filter)
+    {
+        var doctors = _context.Doctors
+            .Where(d => filter.Id == null || d.Id == filter.Id)
+            .Where(d => filter.FirstName == null || d.FirstName.Contains(filter.FirstName))
+            .Where(d => filter.LastName == null || d.LastName.Contains(filter.LastName))
+            .Where(d => filter.PhoneNumber == null || d.PhoneNumber == filter.PhoneNumber)
+            .Select(d => d.ToDoctorVM())
+            .ToList();
+        
+        return View(new DoctorFilterdListVM { Doctors = doctors, Filter = filter });
     }
     public IActionResult Details(int id)
     {
-        var doctors = Constants.Doctors.Single(d => d.Id == id).ToDoctorVM();
-        return View(doctors);
+        var doctor = _context.Doctors.Single(d => d.Id == id).ToDoctorVM();
+        return View(doctor);
     }
     
     public IActionResult Register()
@@ -33,22 +47,24 @@ public class DoctorsController : Controller
         }
 
         var doctor = doctorVm.ToModel();
-        doctor.Id = Constants.Doctors.Select(d => d.Id).Max() + 1;
-        Constants.Doctors.Add(doctor);
-        return RedirectToAction("Details", new {id = doctorVm.Id});
+        _context.Doctors.Add(doctor);
+        _context.SaveChanges();
+        
+        return RedirectToAction("Details", new {id = doctor.Id});
     }
     
     public IActionResult Delete(int id)
     {
-        var doctor = Constants.Doctors.Single(d => d.Id == id);
-        Constants.Doctors.Remove(doctor);
+        var doctor = _context.Doctors.Single(d => d.Id == id);
+        _context.Doctors.Remove(doctor);
+        _context.SaveChanges();
         
         return Ok();    
     }
     
     public IActionResult Update(int id)
     {
-        var doctor = Constants.Doctors.Single(d => d.Id == id).ToUpdateDoctorVM();
+        var doctor = _context.Doctors.Single(d => d.Id == id).ToUpdateDoctorVM();
         return View(doctor);
     }
     
@@ -61,13 +77,15 @@ public class DoctorsController : Controller
             return View(doctorVm);
         }
 
-        var doctor = Constants.Doctors.Single(d => d.Id == id);
+        var doctor = _context.Doctors.Single(d => d.Id == id);
         
         doctor.FirstName = doctorVm.FirstName;
         doctor.LastName = doctorVm.LastName;
         doctor.Email = doctorVm.Email;
         doctor.HireDate = doctorVm.HireDate;
         doctor.PhoneNumber = doctorVm.PhoneNumber;
+        
+        _context.SaveChanges();
         
         return RedirectToAction("Details", new { id });
     }

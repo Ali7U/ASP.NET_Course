@@ -1,17 +1,20 @@
-@model List<DoctorVM>
+@model DoctorFilterdListVM
 
 <h1>Doctors</h1>
+
+<partial name="_Filter" model="Model.Filter"/>
+
 <div>
-    <a asp-controller="Doctors" asp-action="Update">Register</a>
+    <a asp-controller="Doctors" asp-action="Register">Register</a>
 
     <ol>
-        @foreach (var d in Model)
+        @foreach (var d in Model.Doctors)
         {
             <li>
                 <a asp-controller="Doctors" asp-action="Details" asp-route-id="@d.Id">
                     @d.FirstName @d.LastName
                 </a>
-                <a class="btn btn-primary js-btn-delete" asp-controller="Doctors" asp-action="Update" asp-route-id="@d.Id">
+                <a class="btn btn-primary" asp-controller="Doctors" asp-action="Update" asp-route-id="@d.Id">
                     <i class="bi bi-pencil-square"></i>
                     </a>
                 <a class="btn btn-danger js-btn-delete" data-id="@d.Id" >
