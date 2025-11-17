@@ -16,13 +16,20 @@ public class DoctorsController : Controller
     // GET
     public IActionResult Index(DoctorFilterVM  filter)
     {
-        var doctors = _context.Doctors
+        var initQuery = _context.Doctors
             .Where(d => filter.Id == null || d.Id == filter.Id)
             .Where(d => filter.FirstName == null || d.FirstName.Contains(filter.FirstName))
             .Where(d => filter.LastName == null || d.LastName.Contains(filter.LastName))
-            .Where(d => filter.PhoneNumber == null || d.PhoneNumber == filter.PhoneNumber)
-            .Select(d => d.ToDoctorVM())
-            .ToList();
+            .Where(d => filter.PhoneNumber == null || d.PhoneNumber == filter.PhoneNumber);
+            
+        filter.TotalCount = initQuery.Count();
+        
+            var doctors = initQuery
+                .OrderBy(d => d.Id)
+                .Skip((filter.Page - 1) * filter.PageSize)
+                .Take(filter.PageSize)
+                .Select(d => d.ToDoctorVM())
+                .ToList();
         
         return View(new DoctorFilterdListVM { Doctors = doctors, Filter = filter });
     }
