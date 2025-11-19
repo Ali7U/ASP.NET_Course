@@ -1,8 +1,9 @@
 using ClinicApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClinicApp.Controllers;
-
+[Authorize]
 public class PatientsController : Controller
 {
     // GET

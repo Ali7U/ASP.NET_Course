@@ -1,8 +1,10 @@
 using ClinicApp.Models;
 using ClinicApp.ViewModels.Doctors;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClinicApp.Controllers;
+[Authorize]
 
 public class DoctorsController : Controller
 {
