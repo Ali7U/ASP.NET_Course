@@ -1,3 +1,4 @@
+using ClinicApp.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace ClinicApp;
@@ -8,7 +9,7 @@ public static class AdminSeeder
     {
         // Create Scope
         var scope = app.Services.CreateScope();
-        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
 
         var adminEmail = "Ali@gmail.com";
         var adminPassword = "Admin@123456";
@@ -18,7 +19,7 @@ public static class AdminSeeder
         if (adminUser == null)
         {
             // Create Admin User
-            adminUser = new IdentityUser
+            adminUser = new AppUser()
             {
                 UserName = adminEmail.Split("@")[0], 
                 Email = adminEmail,

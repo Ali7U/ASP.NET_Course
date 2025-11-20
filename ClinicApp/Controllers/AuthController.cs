@@ -1,3 +1,4 @@
+using ClinicApp.Models;
 using ClinicApp.ViewModels.Doctors;
 using ClinicApp.ViewModels.Users;
 using Microsoft.AspNetCore.Authorization;
@@ -8,11 +9,11 @@ namespace ClinicApp.Controllers;
 
 public class AuthController : Controller
 {
-    private readonly SignInManager<IdentityUser> _signInManager;
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly SignInManager<AppUser> _signInManager;
+    private readonly UserManager<AppUser> _userManager;
 
-    public AuthController(SignInManager<IdentityUser> signInManager, 
-        UserManager<IdentityUser> userManager)
+    public AuthController(SignInManager<AppUser> signInManager, 
+        UserManager<AppUser> userManager)
     {
         _signInManager = signInManager;
         _userManager = userManager;
@@ -62,7 +63,7 @@ public class AuthController : Controller
     {
         return View();
     }
-    
+
     [HttpPost]
     [Authorize(Roles = "APP_ADMIN")]
     public async Task<IActionResult> Create(CreateUserVM userVm)
@@ -72,11 +73,32 @@ public class AuthController : Controller
             return View(userVm);
         }
 
-        var user = new IdentityUser
+        var user = new AppUser
         {
             UserName = userVm.Email.Split("@")[0],
             Email = userVm.Email
         };
+
+        if (userVm.ProfilePicture != null && userVm.ProfilePicture.Length > 0)
+        {
+            if (userVm.ProfilePicture.Length > 256 * 1024)
+            {
+                ModelState.AddModelError("ProfilePicture", "File size is too big");
+                return View(userVm);
+            }
+            
+            var alllowedExt = new string[] { "image/jpg", "image/png" };
+
+            if (!alllowedExt.Contains(userVm.ProfilePicture.ContentType)) 
+            {
+                ModelState.AddModelError("ProfilePicture", "Invalid file type");
+                return View(userVm);
+            }
+            
+            using var memory = new MemoryStream();
+            userVm.ProfilePicture.CopyTo(memory);
+            user.ProfilePicture = memory.ToArray();
+        }
         
         var result = await _userManager.CreateAsync(user, userVm.Password);
         if (!result.Succeeded)
@@ -84,7 +106,7 @@ public class AuthController : Controller
             ModelState.AddModelError(string.Empty, result.Errors.First().Description);
             return View(userVm);
         }
-        
+
         result = await _userManager.AddToRoleAsync(user, userVm.Role);
 
         if (!result.Succeeded)
@@ -92,7 +114,13 @@ public class AuthController : Controller
             ModelState.AddModelError("Role", "Failed to add role");
             return View(userVm);
         }
+
         
         return Redirect("/");
+    }
+    
+    public async Task<IActionResult> Users() {
+        var users = _userManager.Users.ToList();
+        return View(users);
     }
 }

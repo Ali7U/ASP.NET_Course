@@ -1,6 +1,6 @@
 @model CreateUserVM
 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     <h1>Create User</h1>
     <div class="text-danger" asp-validation-summary="ModelOnly">
     </div>
@@ -27,6 +27,12 @@
         <select class="form-control" asp-for="Role" asp-items="new SelectList(Enum.GetNames<AppRoles>())"></select>
         <label asp-for="Role"></label>
         <span class="text-danger" asp-validation-for="Role"></span>
+    </div>
+    
+    <div class="form-floating mb-2">
+        <input class="form-control" asp-for="ProfilePicture" type="file" accept=".jpg,.png"/>
+        <label asp-for="ProfilePicture"></label>
+        <span class="text-danger" asp-validation-for="ProfilePicture"></span>
     </div>
     
     <div class="form-floating mb-2">

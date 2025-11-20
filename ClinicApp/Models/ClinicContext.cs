@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ClinicApp.Models;
 
-public class ClinicContext : IdentityDbContext<IdentityUser>
+public class ClinicContext : IdentityDbContext<AppUser>
 {
     public DbSet<Doctor> Doctors { get; set; }
     public DbSet<Patient> Patients { get; set; }
@@ -18,7 +18,7 @@ public class ClinicContext : IdentityDbContext<IdentityUser>
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<IdentityUser>(t => t.ToTable("Users"));
+        modelBuilder.Entity<AppUser>(t => t.ToTable("Users"));
         modelBuilder.Entity<IdentityRole>(t => t.ToTable("Roles"));
         modelBuilder.Entity<IdentityUserRole<string>>(t => t.ToTable("UserRoles"));
         modelBuilder.Entity<IdentityUserClaim<string>>(t => t.ToTable("UserClaims"));
